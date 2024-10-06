@@ -1,0 +1,116 @@
+---
+title: "Homework 15"
+author: "Andrew Bazuro"
+format: html
+editor: visual
+---
+Today I am reading through Chapter 3 of Getting Started with R and will work through all the material within here. I hope to be comfortable using the following commands: `select()`, `slice()`, `filter()`, `arrange()`, `mutate()`, `with()`, `group_by()`, `summarise()`, `mean()`, and `sd()`
+
+```{r}
+rm(list = ls())
+library(here)
+library(tidyverse)
+library(dplyr)
+library(ggplot2) #it says ggplot in text but when I attempted to install ggplot I got the error message "package ‘ggplot’ is not available for this version of R". 
+compensation = read.csv(here("data", "compensation.csv"))
+```
+
+3.1
+
+`summary()`
+Gives the mean, median, min, and max. As well as levels and sample size for each level of categorical variable.
+```{r}
+glimpse(compensation)
+summary(compensation)
+```
+
+3.2
+
+`select()`, `slice()`, `filter()`, `arrange()`, `mutate()`
+data frame always comes first
+
+3.3
+
+```{r}
+select(compensation, Fruit)
+#returns a data frame if you use <-
+select(compensation, -Root)
+```
+
+3.3.2
+
+```{r}
+slice(compensation, 2)
+slice(compensation, 2:10)
+slice(compensation, c(2, 3, 10))
+#returns new row numbers in the new df
+```
+
+3.3.3
+
+```{r}
+with(compensation, Fruit > 80)
+#returns what values have > 80 in true/false form, will work well with summarize and group_by to determine statistics
+filter(compensation, Fruit > 80)
+filter(compensation, Fruit > 80 | Fruit < 20)
+```
+
+3.3.4
+
+```{r}
+lo_hi_fruit <- filter(compensation, Fruit > 80 | Fruit < 20)
+lo_hi_fruit
+```
+
+3.4.1
+
+```{r}
+head(compensation)
+compensation <- mutate(compensation, logFruit = log(Fruit))
+```
+
+3.5
+
+```{r}
+arrange(compensation, Fruit)
+```
+
+3.6
+
+```{r}
+select(filter(compensation, Fruit > 80))
+compensation |> filter(Fruit > 80) %>% select(Root) # %>% is juts a pipe. (I'm probably going to code these using |> as that what I'm used to if thats ok.)
+```
+
+3.7.2
+
+```{r}
+summarise(
+  group_by(compensation, Grazing),
+  meanFruit = mean(Fruit)
+)
+
+mean.fruit <- summarise(
+  group_by(compensation, Grazing),
+  meanFruit = mean(Fruit)
+)
+```
+
+3.7.3
+
+```{r}
+compensation |> group_by(Grazing) |> 
+  summarise(meanFruit = mean(Fruit))
+```
+
+3.7.4
+
+```{r}
+compensation |> 
+  group_by(Grazing) |> 
+  summarise(
+    meanFruit = mean(Fruit),
+    sdFruit = sd(Fruit)
+  )
+```
+
