@@ -1,0 +1,13 @@
+---
+title: "hw 15 feedback"
+format: html
+editor: visual
+---
+
+## Homework 15 feedback
+
+Regarding line 15 and the error, I wonder if some of it has to do with the fact that you already loaded the tidyverse library. ggplot comes with tidyverse, as does dplyr, so you don't actually need lines 14 or 15 - but our book is a bit out of date.
+
+Regarding line 82, it is just fine to use |> to pipe rather than %>%
+
+You did a nice job going through all of the code!
