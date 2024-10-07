@@ -4,6 +4,7 @@ author: "Andrew Bazuro"
 format: html
 editor: visual
 ---
+
 Today I am reading through Chapter 3 of Getting Started with R and will work through all the material within here. I hope to be comfortable using the following commands: `select()`, `slice()`, `filter()`, `arrange()`, `mutate()`, `with()`, `group_by()`, `summarise()`, `mean()`, and `sd()`
 
 ```{r}
@@ -17,8 +18,8 @@ compensation = read.csv(here("data", "compensation.csv"))
 
 3.1
 
-`summary()`
-Gives the mean, median, min, and max. As well as levels and sample size for each level of categorical variable.
+`summary()` Gives the mean, median, min, and max. As well as levels and sample size for each level of categorical variable.
+
 ```{r}
 glimpse(compensation)
 summary(compensation)
@@ -26,8 +27,7 @@ summary(compensation)
 
 3.2
 
-`select()`, `slice()`, `filter()`, `arrange()`, `mutate()`
-data frame always comes first
+`select()`, `slice()`, `filter()`, `arrange()`, `mutate()` data frame always comes first
 
 3.3
 
@@ -113,4 +113,3 @@ compensation |>
     sdFruit = sd(Fruit)
   )
 ```
-
