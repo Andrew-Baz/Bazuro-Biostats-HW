@@ -1,0 +1,96 @@
+---
+title: "Homework 18"
+author: "Andrew Bazuro"
+format: html
+editor: visual
+---
+
+```{r}
+rm(list = ls())
+library(here)
+library(tidyverse)
+compensation <- read.csv(here("data", "compensation.csv"))
+```
+4.1
+
+Three major figure types, sactterplot, box and whisker, and the histogram.
+
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit)) #basic syntax, requires an additional geom to actually make plot. (I would probably use a scatterplot here as both variables are numerical.)
+```
+
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit)) + geom_point()
+```
+We discussed the possibility of using the aes() to set the x variables locally instead of globally in ds234. Is it better to specifically use them globally here so that we can swap between graph types more effectively?
+
+
+```{r}
+glimpse(compensation)
+
+ggplot(compensation, aes(x = Root, y = Fruit)) + geom_point() + theme_bw() #I believe that there was a theme (something _viridis_d) which was useful for those who were colorblind which we used in ds234 as well. Is it better to use the colorblind theme here? or is it ok to use the bw theme.
+```
+
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit)) + 
+  geom_point(size = 5) + 
+  theme_bw()
+
+ggplot(compensation, aes(x = Root, y = Fruit)) + 
+  geom_point(size = 5) + 
+  xlab("Root Biomass") +
+  ylab("Fruit Production") +
+  theme_bw()
+```
+
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit, color = Grazing)) + 
+  geom_point(size = 5) + 
+  xlab("Root Biomass") +
+  ylab("Fruit Production") +
+  theme_bw()
+```
+
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit, shape = Grazing)) + 
+  geom_point(size = 5) + 
+  xlab("Root Biomass") +
+  ylab("Fruit Production") +
+  theme_bw()
+```
+
+Interesting to see that we can use shapes to differ the variables. I can see how it would be beneficial for potential 
+```{r}
+ggplot(compensation, aes(x = Grazing, y = Fruit)) +
+  geom_boxplot() +
+  xlab("Grazing Treatment") +
+  ylab("Fruit Production") +
+  theme_bw()
+```
+
+```{r}
+ggplot(compensation, aes(x = Grazing, y = Fruit)) +
+  geom_boxplot() +
+  geom_point(size = 4, colour = 'lightgrey', alpha = 0.5)
+  xlab("Grazing Treatment") +
+  ylab("Fruit Production") +
+  theme_bw()
+```
+
+```{r}
+ggplot(compensation, aes(x = Fruit)) +
+  geom_histogram()
+ggplot(compensation, aes(x = Fruit)) +
+  geom_histogram(bins = 10)
+ggplot(compensation, aes(x = Fruit)) +
+  geom_histogram(bins = 15)
+```
+
+```{r}
+ggplot(compensation, aes(x = Fruit)) +
+  geom_histogram(binwidth = 15) +
+  facet_wrap(~Grazing) +
+  ggsave("HW18 Histogram.png")
+```
+
+This is definently my favorite way of doing it so far, nice to get to see them divided up individually although I can see how a cover overlay could potentially be more useful.
