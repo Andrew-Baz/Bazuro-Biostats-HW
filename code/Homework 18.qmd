@@ -11,6 +11,7 @@ library(here)
 library(tidyverse)
 compensation <- read.csv(here("data", "compensation.csv"))
 ```
+
 4.1
 
 Three major figure types, sactterplot, box and whisker, and the histogram.
@@ -22,8 +23,8 @@ ggplot(compensation, aes(x = Root, y = Fruit)) #basic syntax, requires an additi
 ```{r}
 ggplot(compensation, aes(x = Root, y = Fruit)) + geom_point()
 ```
-We discussed the possibility of using the aes() to set the x variables locally instead of globally in ds234. Is it better to specifically use them globally here so that we can swap between graph types more effectively?
 
+We discussed the possibility of using the aes() to set the x variables locally instead of globally in ds234. Is it better to specifically use them globally here so that we can swap between graph types more effectively?
 
 ```{r}
 glimpse(compensation)
@@ -59,7 +60,8 @@ ggplot(compensation, aes(x = Root, y = Fruit, shape = Grazing)) +
   theme_bw()
 ```
 
-Interesting to see that we can use shapes to differ the variables. I can see how it would be beneficial for potential 
+Interesting to see that we can use shapes to differ the variables. I can see how it would be beneficial for potential
+
 ```{r}
 ggplot(compensation, aes(x = Grazing, y = Fruit)) +
   geom_boxplot() +
