@@ -1,0 +1,32 @@
+---
+title: "homework feedback"
+format: html
+editor: visual
+---
+
+## Homework feedback
+
+### Homework 16
+
+I like how you renamed site.
+
+Lines 78 - 82 you aren't quite where you need to be. I can see your thinking in terms of getting rid of some unnecessary data, but all you really need is a group_by and summarise. The numbers you got are incorrect.
+
+Try this:
+
+```{r}
+cover_Q1 <- cover |> filter(Location == "Donnerville 1") |> 
+  group_by(cover_type) |> summarise(
+    mean_percent = mean(Percent)
+  )
+```
+
+Lines 88 - 91
+
+Again, you need a group_by and summarise. See the key for solution.
+
+### Homework 18
+
+Interesting question from ds234. Do you mean that you would use the aes() in each geom rather than in the first ggplot() call? I don't think there is a "better" but I'd love to chat about it!
+
+I also appreciate that you asked questions/had commentary outside of your code chunks. Good!

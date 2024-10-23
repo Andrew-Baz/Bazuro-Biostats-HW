@@ -24,7 +24,6 @@ Rename Site as Location to better reflect what the variable represents
 cover <- cover |> mutate(Location = Site) |> select(-Site)
 ```
 
-
 Set Site, Plot.type, and cover_type as factor variables
 
 ```{r}
@@ -33,9 +32,8 @@ cover$Plot.type <- as.factor(cover$Plot.type)
 cover$cover_type <- as.factor(cover$cover_type)
 ```
 
-
-
 Set Date as a date variable type
+
 ```{r}
 cover = cover |> mutate(Date = dmy(Date))
 ```
@@ -82,6 +80,7 @@ cover_Q1 <- cover |> filter(Location == "Donnerville 1") |> select(-Date, -Plot.
 ##Bare is the last section left so no more work is necessary, but I will select out unnecessary information for ease of reading.
 summary(cover_Q1)
 ```
+
 The average percent cover by cover type for Donnerville 1 is 33.33%.
 
 Determine the average percent vascular plant cover across all sites
