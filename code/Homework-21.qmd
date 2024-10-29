@@ -4,6 +4,7 @@ author: "Andrew Bazuro"
 format: html
 editor: visual
 ---
+
 ```{r}
 rm(list = ls())
 library(here)
@@ -13,10 +14,8 @@ ozone = read.csv(here("data", "ozone.csv"))
 ##I read these in through the book link so they hopefully won't require me to change to factor but I will double check when I reach that section. However, based on how none of the variables are factor I doubt that will be the case.
 ```
 
-5.2
-Always start by plotting data.
-THen attempt to understand the hypothesis that is being tested.
-X2 contingency analysis is an analysis of count data to test association between two or more categorical variables.
+5.2 Always start by plotting data. THen attempt to understand the hypothesis that is being tested. X2 contingency analysis is an analysis of count data to test association between two or more categorical variables.
+
 ```{r}
 glimpse(lady)
 lady$Habitat <- as.factor(lady$Habitat)
@@ -28,18 +27,22 @@ lady <- lady |> select(-colour)
 Here I noticed that the name was different for the colour coloumn so I renamed it to morph_colour to better match the data.
 
 calculate totals
+
 ```{r}
 totals <- lady |> 
   group_by(Habitat, morph_colour) |>
   summarise(total.number = sum(number))
 glimpse(totals)
 ```
+
 Create a barplot of the totals
+
 ```{r}
 ggplot(totals, aes(x = Habitat, y = total.number,
                    fill = morph_colour)) +
   geom_bar(stat = 'identity', position = 'dodge')
 ```
+
 I've never used position = 'dodge' before for geom_bar and I have to say it makes it look much nicer, also, I thought that geom_bar was supposed to only work with an x aesthetic but I see that the stat = "" command set it so that it can use both, is there any benefit to using that over geom_col() which should allow both aesthetics normally?
 
 Fixing the colours
@@ -50,20 +53,22 @@ ggplot(totals, aes(x = Habitat, y = total.number,
   geom_bar(stat = 'identity', position = 'dodge') +
   scale_fill_manual(values = c(black = "black", red = "red"))
 ```
+
 The colour coding here is a nice touch to the data.
 
 Based on the figure there does appear to be some indication of an association between colour morphs and habitat, as the black ladybirds are much more common in the industrial habitat.
 
 Actual test
+
 ```{r}
 lady.mat <- xtabs(number ~ Habitat + morph_colour, 
                   data = lady)
 chisq.test(lady.mat)
 ```
 
-‘We tested the hypothesis that there is an association between colour morphs of ladybirds and industrial and rural habitats. Ladybird colour morphs are not equally distributed in the two habitats (χ2 = 19.1, df = 1, p > 0.001)'
+‘We tested the hypothesis that there is an association between colour morphs of ladybirds and industrial and rural habitats. Ladybird colour morphs are not equally distributed in the two habitats (χ2 = 19.1, df = 1, p \> 0.001)'
 
-Beckerman, Andrew P.; Childs, Dylan Z.; Petchey, Owen L.. Getting Started with R: An Introduction for Biologists (p. 102). OUP Oxford. Kindle Edition. 
+Beckerman, Andrew P.; Childs, Dylan Z.; Petchey, Owen L.. Getting Started with R: An Introduction for Biologists (p. 102). OUP Oxford. Kindle Edition.
 
 ```{r}
 lady.chi <- chisq.test(lady.mat)
@@ -72,11 +77,13 @@ lady.chi$expected
 ```
 
 Two sample T test
+
 ```{r}
 ozone$Garden.location <- as.factor(ozone$Garden.location)
 ozone$Garden.ID <- as.factor(ozone$Garden.ID)
 glimpse(ozone)
 ```
+
 Changed Garden.location and Garden.ID to factor variables
 
 ```{r}
@@ -85,6 +92,7 @@ ggplot(ozone, aes(x = Ozone)) +
   facet_wrap(~ Garden.location, ncol = 1) +
   theme_bw()
 ```
+
 Meets the assumption of normality and equality of variance.
 
 Genereate the means and std error
@@ -95,6 +103,7 @@ ozone |> group_by(Garden.location) |>
   summarise(mean = mean(Ozone, na.rm = TRUE), 
             sd = sd(Ozone, na.rm = TRUE))
 ```
+
 Include na.rm to ignore any NA values if there are any in the dataframe.
 
 ```{r}
@@ -104,4 +113,3 @@ var.test(Ozone ~ Garden.location,
          data = ozone)
 ##var. test to test for variance, in the text it mentions that this isn't a very good idea but I'm not entirely certain on the reason for this. I may have just missed it but would love to know why.
 ```
-

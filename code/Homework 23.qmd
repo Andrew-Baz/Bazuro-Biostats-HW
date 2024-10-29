@@ -1,0 +1,48 @@
+---
+title: "Homework 23"
+author: "Andrew Bazuro"
+format: html
+editor: visual
+---
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+plant_gr = read.csv(here("data", "plant.growth.rate.csv"))
+```
+
+```{r}
+glimpse(plant_gr)
+ggplot(plant_gr,
+       aes(x = soil.moisture.content, y = plant.growth.rate)) +
+  geom_point() +
+  ylab("Plant Growth Rate (mm/week") +
+  theme_bw()
+```
+
+Positive gradient, slope is between 20/50 while moisture is between 0/2. Slope appears to be 15 with an intercept between 15/20.
+
+```{r}
+model_pgr <- lm(plant.growth.rate ~soil.moisture.content, data = plant_gr)
+```
+
+```{r}
+library(ggfortify)
+autoplot(model_pgr, smooth.colour = NA)
+```
+
+```{r}
+anova(model_pgr)
+##produces the sum of squares table and overall F-value for the model. Not the anova for means.
+summary(model_pgr)
+##produces a table of the estimates of the coefficients of the line that is the model.
+```
+
+```{r}
+ggplot(plant_gr, aes(x = soil.moisture.content, y = plant.growth.rate)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  ylab("Plant Growth Rate") +
+  theme_bw()
+```
+Geom_smooth() fits a trendline along with the standard error of the fit (shown in grey) Works well with the facet_wrap() but not as well with complex models.
