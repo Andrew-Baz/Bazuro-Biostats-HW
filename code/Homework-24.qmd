@@ -1,0 +1,81 @@
+---
+title: "Homework 24"
+format: html
+editor: visual
+---
+
+## Overview
+
+For your homework you will implement a data analysis using a dataset on crab growth measurements.
+
+Set things up (hint: there is a new package to add with `library()`)
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+library(ggfortify)
+```
+
+## The data
+
+Let's pull in some data appropriate biologists: crab measurements. This dataset includes measurements of farmed crabs.
+
+```{r}
+crabs <- read.csv(here("data", "CrabAgePrediction.csv"))
+glimpse(crabs)
+```
+
+One of the variables is categorical - let's fix that in the data.
+
+```{r}
+crabs$Sex <- as.factor(crabs$Sex)
+```
+
+## Question
+
+Is there a relationship between height and weight in female crabs?
+
+1.  Extract the data for just female crabs.
+```{r}
+crabs_F <- crabs |> filter(Sex == "F")
+```
+
+2.  Examine the response and predictor variables and use the flow chart from class to decide the appropriate statistical analysis (choose from: chi-square, 2-sample t-test or linear regression). Explain your answer here: 
+Since we are looking at the relationship between height and weight we should use a linear regression as both are continous ratio variables.
+
+3.  Work through the data analysis **following all of the steps provided in chapter 5 of your book**. You may use class notes or homework keys as a guide.
+
+Plot the data
+```{r}
+ggplot(data = crabs_F, aes(x = Height, y = Weight)) +
+  geom_point()
+74/2.7
+```
+The slope is positive, the weight ranges from 76 to 2, and the Height ranges from 2.8 to 0.1. So the slope is about 27.40741. The y-intercept looks like it will be somewhere at or below 0 (possibly down to -20 or so)
+
+```{r}
+model_crabs <- lm(Weight ~ Height, data = crabs_F)
+autoplot(model_crabs, smooth.colour = NA)
+```
+Based on this graph the normality looks fine, although there is very large outlier (701) which might be worth examining. There are a few other outliers but they are much closer to the 0 line. As such, I'll assume that equal variance is good here (although it may be worth looking at)
+
+Interpretation
+```{r}
+anova(model_crabs)
+```
+summary table
+```{r}
+summary(model_crabs)
+```
+There does appear to be a significant relationship between the Height and Weight for female crabs (T = 24.770, df = 1223, p = 2.2 x 10^-16)
+(I know you wrote exactly what to include in these parentheses on the board but my notes from class earlier today apparently didn't save the last bit of work we did and doesn't have it. So please let me know if there's a part that I'm missing or if I put in the wrong statistic.)
+Finally, I'll create a figure to show our results
+```{r}
+ggplot(data = crabs_F, aes(x = Height, y = Weight)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  theme_bw()
+```
+
+## 
