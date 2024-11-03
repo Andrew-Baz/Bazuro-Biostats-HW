@@ -4,6 +4,7 @@ author: "Andrew Bazuro"
 format: html
 editor: visual
 ---
+
 ```{r}
 rm(list = ls())
 library(tidyverse)
@@ -45,4 +46,5 @@ ggplot(plant_gr, aes(x = soil.moisture.content, y = plant.growth.rate)) +
   ylab("Plant Growth Rate") +
   theme_bw()
 ```
+
 Geom_smooth() fits a trendline along with the standard error of the fit (shown in grey) Works well with the facet_wrap() but not as well with complex models.
