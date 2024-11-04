@@ -1,0 +1,75 @@
+---
+title: "Homework-26"
+author: "Andrew Bazuro"
+format: html
+editor: visual
+---
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+library(ggfortify)
+library(multcomp)
+```
+
+```{r}
+pea <- read.csv(here("data", "s_r_pea_sections.csv"))
+pea$Treatment <- as.factor(pea$Treatment)
+```
+Plot the data
+```{r}
+ggplot(pea, aes(x = Treatment, y = pea_section_length_ou)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.1) +
+  theme_bw() +
+  coord_flip()
+```
+Mean for the control is far higher than the rest at 68, otherwise, the order is as follows: 2 % sucrose has a mean of around 64, 2 % glucose is 59, 2 % fructose is 56, while 1 % fructose and 1 % gluxcose is at 56 as well. There are no visible outliers within the data. Based on this I would assume there is a significant difference between the control and all other samples and between the 2 percent sucrose and all other samples, but that there will be no significant difference between the remaining three.
+
+```{r}
+ggplot(pea, aes(x = pea_section_length_ou)) +
+  geom_histogram() +
+  facet_wrap(~Treatment) +
+  theme_bw()
+```
+
+Create a model
+```{r}
+model_pea <- lm(pea_section_length_ou ~ Treatment, data = pea)
+```
+
+autoplot using ggfortify
+
+```{r}
+autoplot(model_pea, smooth.colour = NA)
+```
+Normality looks good here, as does equal variance.
+
+Run anova and summary table functions
+
+```{r}
+anova(model_pea)
+```
+due to our large F value (49.368) and p value of less than 0.5 we reject the null hypothesis that the mean pea_section_length is the same for each treatment.
+
+```{r}
+summary(model_pea)
+```
+Get the mean pea length
+```{r}
+sumPea <- pea |> group_by(Treatment) |> summarise(MeanPL = mean(pea_section_length_ou))
+sumPea
+```
+Based on this the mean growth pea length is 12.1 for 1 percent fructose 1 percent glucose, 11.9 for 2 percent fructose, 10.8 for 2 percent glucose, and 6 for 2 percent sucrose
+
+Conducting a TukeyHSD
+```{r}
+phc1 <- glht(model_pea, linfct = mcp(Treatment = "Tukey"))
+summary(phc1)
+```
+
+```{r}
+cld(phc1)
+```
+
+Here we can see there are significant differences between all the control and all other samples, as well as between 2 percent sucrose and all other samples. There was no significant difference between 1 percent fructose 1 percent glucose, 2 percent fructose, and 2 percent glucose.

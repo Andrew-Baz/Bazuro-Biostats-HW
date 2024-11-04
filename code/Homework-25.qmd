@@ -4,7 +4,9 @@ author: "Andrew Bazuro"
 format: html
 editor: visual
 ---
+
 pg 118 to 129
+
 ```{r}
 rm(list = ls())
 library(tidyverse)
@@ -14,6 +16,7 @@ daphnia = read.csv(here("data", "Daphniagrowth.csv"))
 ```
 
 three variables, read in parasite as a factor
+
 ```{r}
 daphnia$parasite <- as.factor(daphnia$parasite)
 ```
@@ -27,6 +30,7 @@ ggplot(daphnia, aes(x = parasite, y = growth.rate)) +
 ```
 
 Note the text coming in all mashed here, we can fix this using a coord_flip() which alternates the axes.
+
 ```{r}
 ggplot(daphnia, aes(x = parasite, y = growth.rate)) +
   geom_boxplot() +
@@ -49,6 +53,7 @@ autoplot(model_grow, smooth.colour = NA)
 Some concern over normality in the upper right graph (doesn't exactly follow the line).
 
 summary table and anova function
+
 ```{r}
 anova(model_grow)
 ```
@@ -58,9 +63,12 @@ null hypothesis for a one way anova is that all of the groups come from populati
 ```{r}
 summary(model_grow)
 ```
+
 control is labelled intercept here. R also deaults to presenting these alphabetically.
+
 ```{r}
 sumDat <- daphnia |> group_by(parasite) |> summarise(meanGR = mean(growth.rate))
 sumDat
 ```
+
 If ggfortify is not availible there are some ways to find older versions (by googling 'ggfortify cran') or by installing the development version using a series of code (I won't repeat it here as I don't want to install the version but they are on page 130)
