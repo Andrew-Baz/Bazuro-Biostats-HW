@@ -47,7 +47,6 @@ Now do Nitrate
 Nit <- soil |> group_by(Forest) |> summarise(mean_n = mean(Nitrate_N_ppm, na.rm = TRUE), sd_n = sd(Nitrate_N_ppm, na.rm = TRUE))
 ```
 
-
 5.  Now run the following code chunk which will create a bar plot of mean soil organic matter per forest, with standard deviation as error bars.
 
 ```{r}
@@ -61,7 +60,6 @@ ggplot(SOM, aes(Forest, mean_SOM))+
 Based on what you see in the bar chart, how would you describe the pattern of SOM between the 4 different forests? Write your answer here:
 
 Based on the bar chart it appears that the Kip Tract has the greatest Mean percent with Donnerville having the second most, South Hammond having the third, and Degrasse having the lowest. The error bars show that the devation within each dataset also follows the same trend, with Kip Tract having them largest deviation and Degrasse having the least.
-
 
 Now create a boxplot of the SOM_percent data. Use Forest as the x-axis variable and overlay the point data on top of the boxplot. Make the points blue and somewhat transparent. Call the x-axis "Forest name" and the y-axis "Percent soil organic matter" (hint: See homework 18...).
 
