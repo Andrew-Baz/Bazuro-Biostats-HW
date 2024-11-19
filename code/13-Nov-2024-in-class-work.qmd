@@ -19,13 +19,12 @@ Read in the data.
 df <- read.csv(here("Data/learn-about-NA.csv"))
 str(df)
 ```
+
 Observing with the `str()` command shows me that I have a DF with 60 rows, one character variable and two numeric variables.
 
 ```{r}
 df$Treatment <- as.factor(df$Treatment)
 ```
-
-
 
 ## Dealing with NA's
 
@@ -70,7 +69,6 @@ sum(complete.cases((df))) #add up the number complete rows in the dataframe
 We see that there are 36 rows that have no NA values in any columns.
 
 Use a combination of `sum()`, `complete.cases()` and `head()` to return a numeric validation for the number you answered for question 1 above.
-
 
 ```{r}
 sum(complete.cases(head(df)))
@@ -185,11 +183,9 @@ df_remove_NA_Mass <- df |> drop_na(Dried_mass_g)
 
 Now you write some code to use `drop_na()` to create a new data frame called `df_remove_NA_growth` that has no NA values in the Growth_rate_mm column:
 
-
 ```{r}
 df_remove_NA_growth <- df |> drop_na(Growth_rate_mm)
 ```
-
 
 ```{r}
 df_remove_NA_growth <- df |> drop_na(Growth_rate_mm)
@@ -212,8 +208,7 @@ df_All_NA = df
 df_No_NA = df1
 ```
 
-What if we wanted to test the hypothesis that there is no effect of fertilizer treatment on plant growth rate?
- Growth_rate_mm ~ Treatment, data = df_NO_NA
+What if we wanted to test the hypothesis that there is no effect of fertilizer treatment on plant growth rate? Growth_rate_mm \~ Treatment, data = df_NO_NA
 
 Our predictor variable type is: Categorical
 
@@ -233,8 +228,8 @@ ggplot(df_All_NA, aes(Treatment, Growth_rate_mm))+
   geom_point() +
   theme_bw()
 ```
-Looks like there will be a signficant effect of treatment and that level 1 and level 2 will be different from control. Not sure if Level 1 and Level 2 will differ from one another.
-What do you think?
+
+Looks like there will be a signficant effect of treatment and that level 1 and level 2 will be different from control. Not sure if Level 1 and Level 2 will differ from one another. What do you think?
 
 #### Create a model:
 

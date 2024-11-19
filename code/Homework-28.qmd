@@ -1,0 +1,123 @@
+---
+title: "Homework 28"
+author: "Andrew Bazuro"
+format: html
+editor: visual
+---
+Chapter 8 homework
+
+```{r}
+rm(list = ls())
+library(ggplot2)
+library(gridExtra) ##read in new package
+library(tidyverse)
+library(here)
+compensation <- read.csv(here("data", "compensation.csv"))
+```
+
+Base Scatterplot and Box and Whisker plot
+```{r}
+eg_scatter <- ggplot(data = compensation, aes(x = Root, y = Fruit)) +
+  geom_point()
+
+eg_box <- ggplot(data = compensation, aes(x = Grazing, y = Fruit)) +
+  geom_boxplot()
+```
+
+Use the environment readouts as shorthand code (this is really cool)
+
+```{r}
+eg_scatter + theme_bw()
+```
+
+gridExtra is a helper package to place more than one figure on the same page.
+```{r}
+grid.arrange(eg_scatter, eg_box, nrow = 1)
+```
+
+Things to change on every graph
+axis labels
+axis ranges and tick mark locations
+the grey background and gridlines
+boxes and title in key
+text annotation inside the plot
+these are done using `scale()` and `theme()`
+
+```{r}
+eg_scatter + xlab("Root Biomass") + ylab("Fruit Production")
+```
+if you must incude a title you can use `ggtitle()` or you can use `labs(title = ")`
+```{r}
+eg_scatter + ggtitle("Something")
+eg_scatter + labs(title = "useless", x = "Root Biomass", y = "Fruit Production")
+```
+We can also change the range of the x and y axes
+```{r}
+eg_scatter + xlim(0, 20) +ylim(0, 140)
+```
+
+we can also use ``annotate()` to put writing in the plot
+```{r}
+eg_scatter +
+  annotate("text", x = c(6,8), y = c(105,25),
+           label = c("Text up here", "and text down here"))
+```
+
+We can also make breaks
+```{r}
+eg_scatter + scale_x_continuous(limits = c(4, 11), breaks = 4:11)
+```
+
+We can also change the theme and set a custom set of colour values
+```{r}
+ggplot(data = compensation, aes(x = Root, y = Fruit, colour = Grazing)) +
+  geom_point() +
+  scale_colour_manual(values = c(Grazed = "brown", Ungrazed = "Green"))
+```
+
+`scales_()` can also be used to transform the axis (such as via a log transform)
+
+```{r}
+eg_box +
+  scale_y_continuous(breaks = seq(from = 10, to = 150, by = 20), trans = "log10")
+```
+
+We can also use `theme()` to setup gridlines
+```{r}
+eg_scatter +
+  theme(
+    panel.background = element_rect(fill = NA, colour = "black"),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(colour = "lightblue")
+  )
+```
+
+We can also adjust the colour and size of the x axis.
+
+```{r}
+eg_box +
+  theme(
+    axis.title.x = element_text(colour = "cornflowerblue", 
+                                size =rel(2)), ##this is an equal sign not a minus
+    axis.text.x = element_text(angle = 45, size = 13, vjust = 0.5)
+  )
+```
+
+We can also change the labels of discrete axes
+```{r}
+eg_box + scale_x_discrete(limits = c("Ungrazed", "Grazed"),
+                          labels = c("Control", "Grazed"))
+```
+
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit, colour = Grazing)) +
+  geom_point() +
+  theme(legend.key = element_rect(fill = NA))
+```
+
+We can also fully remove the legend
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit, colour = Grazing)) + geom_point() +
+         theme(legend.position = "none")
+```
+
